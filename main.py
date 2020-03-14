@@ -4,3 +4,5 @@ app = Flask(__name__)
 def result():
     print(request.form['foo']) # should display 'bar'
     return 'Received !' # response to your request.
+while True:
+    pass
