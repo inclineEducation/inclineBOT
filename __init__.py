@@ -1,7 +1,10 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 app = Flask(__name__)
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def result():
-    print(request.form['foo']) # should display 'bar'
-    return 'Received !' # response to your request.
+    if request.method == 'GET':
+        return 'get'
+    else:
+        return request.form['foo'] # should display 'bar'
+        # return data # response to your request.
 
