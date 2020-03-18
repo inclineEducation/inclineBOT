@@ -9,9 +9,14 @@ def result():
     token = tokenFile.readline().rstrip('\n')
     tokenFile.close()
     if request.method == 'GET':
-        return 'get'
+        return "get method invoked - THIS URL IS USED FOR POSTING. COME BACK WITH POST. GET OUT WITH YOUR GETS."
     else:
         data = str(request.form['text'])
+	user = None
+	try:
+		user = str(request.form['user_name'])
+	except:
+		user = 'anon'
 	index = 0
 	while index < len(data) and (not data[index] == ' '):
 		index = index + 1
@@ -25,9 +30,9 @@ def result():
 	g = Github(str(token))
 	repo = g.get_repo("inclineEducation/inclineEducation.github.io")
 	redirects = repo.get_contents("_redirects")
-	repo.update_file(redirects.path, "added http://inclineedu.org/" + source + " -> " + dest + " to redirects",\
-	str(redirects.decoded_content) + "/" + source + "    " + dest + "\n", redirects.sha)
+	repo.update_file(redirects.path,user + " added http://inclineedu.org/" + source + " -> " + dest + " to redirects",\
+	str(redirects.decoded_content) + "/" + source + "    " + dest + "     # added by: " + user + "\n", redirects.sha)
 	return 'inclineedu.org/' + source + " now redirects to " + dest
-	return 'success'
+	# return 'success'
         # return data # response to your request.
 
