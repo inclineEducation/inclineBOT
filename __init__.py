@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify
 from github import Github
+import os
 app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def result():
+    APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+    tokenFile = open(os.path.join(APP_ROOT, 'token'), "r")
+    token = tokenFile.readline().rstrip('\n')
+    tokenFile.close()
     if request.method == 'GET':
         return 'get'
     else:
@@ -16,7 +21,8 @@ def result():
 	dest = data[index + 1:len(data)]
 	if len(dest) < 8 or ((not dest[0:8] == "https://") and (not dest[0:7] == "http://")):
 		return "invalid destination string - please prefix website URLs with http:// or https:// "
-	g = Github('b686da0712379418f91f88cf8f9e1fb2060013a0')
+	print('token: ' + token)
+	g = Github(str(token))
 	repo = g.get_repo("inclineEducation/inclineEducation.github.io")
 	redirects = repo.get_contents("_redirects")
 	repo.update_file(redirects.path, "added http://inclineedu.org/" + source + " -> " + dest + " to redirects",\
