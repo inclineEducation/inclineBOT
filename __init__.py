@@ -3,8 +3,13 @@ from github import Github
 import os
 import requests
 import json
+from link import Link
+from threading import Thread
+import time
 
 app = Flask(__name__)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def result():
     '''
@@ -16,6 +21,7 @@ def result():
 
     return str(r.status_code) + r.reason + " " + request.form['response_url']
     '''
+
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     tokenFile = open(os.path.join(APP_ROOT, 'token'), "r")
     token = tokenFile.readline().rstrip('\n')
@@ -23,6 +29,12 @@ def result():
     if request.method == 'GET':
         return "get method invoked - THIS URL IS USED FOR POSTING. COME BACK WITH POST. GET OUT WITH YOUR GETS."
     else:
+        print("starting new thread")
+        thread = Link(request.__copy__(), token)
+        thread.start()
+        return 'Link request received'
+
+    '''
         data = str(request.form['text'])
 	user = None
 	try:
@@ -47,3 +59,4 @@ def result():
 	return 'inclineedu.org/' + source + " now redirects to " + dest
 	# return 'success'
         # return data # response to your request.
+    '''
