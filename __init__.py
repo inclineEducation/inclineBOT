@@ -1,9 +1,21 @@
 from flask import Flask, request, jsonify
 from github import Github
 import os
+import requests
+import json
+
 app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def result():
+    '''
+    post_data = {"text": "link request received"}
+    r = requests.post(
+        request.form['response_url'], data=json.dumps(post_data),
+        headers={'Content-Type': 'application/json'}
+    )
+
+    return str(r.status_code) + r.reason + " " + request.form['response_url']
+    '''
     APP_ROOT = os.path.dirname(os.path.abspath(__file__))
     tokenFile = open(os.path.join(APP_ROOT, 'token'), "r")
     token = tokenFile.readline().rstrip('\n')
@@ -35,4 +47,3 @@ def result():
 	return 'inclineedu.org/' + source + " now redirects to " + dest
 	# return 'success'
         # return data # response to your request.
-
